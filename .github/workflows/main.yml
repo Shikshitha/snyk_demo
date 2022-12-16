@@ -1,12 +1,20 @@
-on: push
+name: Generate Changelog
+on: 
+  push:
+    branches:
+      - main
+
 jobs:
-  security:
+  build:
+    name: Update Changelog
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@master
-      - name: Run Snyk to check for vulnerabilities
-        uses: snyk/actions/node@master
-        env:
-          SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
-           snyk auth 020360b3-074f-439e-8aee-ea831b40eacf
-           snyk test
+      - name: Checkout master
+        uses: actions/checkout@v2
+
+      - name: Set up changelog
+        uses: heinrichreimer/github-changelog-generator-action@v2.1.1
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+      - run: |
+          ls
