@@ -1,20 +1,13 @@
-name: Changelog
-on: 
-  push:
-    branches:
-      - main
-
+name: Example workflow using Snyk
+on: push
 jobs:
-  build:
-    name: Update Changelog
+  security:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout master
-        uses: actions/checkout@v2
-
-      - name: Set up changelog
-        uses: heinrichreimer/github-changelog-generator-action@v2.1.1
+      - uses: actions/checkout@master
+      - name: Run Snyk to check for vulnerabilities
+        uses: snyk/actions/node@master
+        env:
+          SNYK_TOKEN: ${{ secrets.020360b3-074f-439e-8aee-ea831b40eacf }}
         with:
-          token: ${{ secrets.GITHUB_TOKEN }}
-      - run: |
-          ls
+          command: monitor
